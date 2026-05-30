@@ -1,49 +1,269 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-// Intentionally NOT importing SITE.email here — keep the address out of the
-// client bundle. The real form (Phase 4) will POST to a form provider whose
-// dashboard holds the destination email.
+import { SITE } from '../config/site';
+
+// NOTE: intentionally do not import SITE.email here — the address must
+// never appear in the client-rendered HTML. Formspree's backend holds
+// the destination address; the page only needs the endpoint URL.
+const endpoint = SITE.formspreeEndpoint;
+const formAction = endpoint ?? '#';
 ---
 
 <BaseLayout
   title="Contact"
   description="Get in touch with Robert Contant."
-  noindex
 >
   <section class="contact page-shell">
-    <p class="eyebrow">Contact</p>
-    <h1>Get in touch.</h1>
-    <p class="lede">
-      A short form — coming online with the rest of the site in the next phase.
-    </p>
-    <p class="placeholder">
-      <em>TODO (Phase 4):</em> wire the form to a provider that delivers messages
-      without exposing the destination address in client-rendered HTML.
-    </p>
+    <header class="contact-head">
+      <p class="eyebrow">Contact</p>
+      <h1>Get in touch.</h1>
+      <p class="lede">
+        Hiring, collaborating, or just want to compare notes on detection engineering?
+        Send a message and I'll respond when I can.
+      </p>
+    </header>
+
+    {!endpoint && (
+      <p class="notice" role="status">
+        <strong>Form not yet wired.</strong>
+        <em>TODO(bobby):</em> create a form at <a href="https://formspree.io" rel="noopener" target="_blank">formspree.io</a>,
+        set the destination to your email in the Formspree dashboard, then paste the endpoint
+        URL into <code>formspreeEndpoint</code> in <code>src/config/site.ts</code>. The submit
+        button below is disabled until then.
+      </p>
+    )}
+
+    <form
+      class="contact-form"
+      id="contact-form"
+      action={formAction}
+      method="POST"
+      novalidate
+      data-endpoint={endpoint ?? ''}
+    >
+      <div class="field">
+        <label for="name">Name</label>
+        <input id="name" name="name" type="text" autocomplete="name" required aria-required="true" />
+      </div>
+
+      <div class="field">
+        <label for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email" required aria-required="true" />
+      </div>
+
+      <div class="field">
+        <label for="subject">Subject <span class="optional">(optional)</span></label>
+        <input id="subject" name="_subject" type="text" />
+      </div>
+
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="6" required aria-required="true"></textarea>
+      </div>
+
+      {/* Honeypot: bots will fill this; humans never see it. */}
+      <div class="honeypot" aria-hidden="true">
+        <label for="_gotcha">Leave this field empty</label>
+        <input id="_gotcha" name="_gotcha" type="text" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <div class="actions">
+        <button type="submit" class="submit" disabled={!endpoint}>
+          {endpoint ? 'Send message' : 'Form not yet enabled'}
+        </button>
+      </div>
+
+      <div class="status" id="form-status" role="status" aria-live="polite"></div>
+    </form>
   </section>
 </BaseLayout>
 
 <style>
   .contact {
     padding-block: clamp(var(--space-10), 10vw, var(--space-12)) var(--space-10);
-    max-width: 48rem;
+    max-width: 40rem;
   }
-  .contact .eyebrow { margin-bottom: var(--space-4); }
-  .contact h1 {
+
+  .contact-head { margin-bottom: var(--space-8); }
+  .contact-head .eyebrow { margin-bottom: var(--space-4); }
+  .contact-head h1 {
     font-size: var(--text-4xl);
-    margin-bottom: var(--space-5);
+    margin-bottom: var(--space-4);
   }
   .lede {
     font-size: var(--text-lg);
     color: var(--color-ink-muted);
     max-width: var(--measure);
   }
-  .placeholder {
-    margin-top: var(--space-8);
+
+  .notice {
+    margin-bottom: var(--space-6);
     padding: var(--space-4) var(--space-5);
     border-left: 2px solid var(--color-accent);
     background: var(--color-accent-soft);
     color: var(--color-ink-muted);
     font-size: var(--text-sm);
   }
+  .notice strong { color: var(--color-ink); display: block; margin-bottom: var(--space-1); }
+  .notice code {
+    background: var(--color-code-bg);
+    padding: 0.12em 0.4em;
+    border-radius: var(--radius-sm);
+    font-size: 0.88em;
+  }
+
+  .contact-form {
+    display: grid;
+    gap: var(--space-5);
+    margin-top: var(--space-6);
+  }
+
+  .field { display: grid; gap: var(--space-2); }
+
+  .field label {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    color: var(--color-ink);
+  }
+  .optional {
+    font-weight: 400;
+    color: var(--color-ink-subtle);
+    font-size: var(--text-xs);
+    margin-left: var(--space-2);
+  }
+
+  .field input,
+  .field textarea {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    color: var(--color-ink);
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-rule-strong);
+    border-radius: var(--radius-sm);
+    padding: var(--space-3) var(--space-4);
+    transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  }
+
+  .field textarea {
+    resize: vertical;
+    min-height: 8rem;
+    font-family: var(--font-sans);
+    line-height: var(--leading-base);
+  }
+
+  .field input:focus,
+  .field textarea:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px color-mix(in oklab, var(--color-accent) 24%, transparent);
+  }
+
+  .field input:invalid:not(:placeholder-shown),
+  .field textarea:invalid:not(:placeholder-shown) {
+    border-color: #c0524f;
+  }
+
+  .honeypot {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
+
+  .actions { display: flex; align-items: center; gap: var(--space-4); }
+
+  .submit {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    color: var(--color-bg);
+    background: var(--color-ink);
+    border: 1px solid var(--color-ink);
+    border-radius: var(--radius-sm);
+    padding: var(--space-3) var(--space-5);
+    cursor: pointer;
+    transition: background var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  .submit:hover:not(:disabled) {
+    background: var(--color-accent);
+    color: var(--color-bg);
+    border-color: var(--color-accent);
+  }
+
+  .submit:disabled {
+    background: transparent;
+    color: var(--color-ink-subtle);
+    border-color: var(--color-rule-strong);
+    cursor: not-allowed;
+  }
+
+  .submit[aria-busy='true'] {
+    opacity: 0.7;
+    cursor: progress;
+  }
+
+  .status {
+    min-height: 1.5rem;
+    font-size: var(--text-sm);
+  }
+  .status[data-state='ok']    { color: var(--color-accent); }
+  .status[data-state='error'] { color: #c0524f; }
 </style>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const status = document.getElementById('form-status') as HTMLElement | null;
+  if (!form || !status) {
+    // nothing to wire
+  } else {
+    const endpoint = form.dataset.endpoint;
+    const submit = form.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+
+    form.addEventListener('submit', async (e) => {
+      if (!endpoint) return; // no-op; button is disabled too
+      e.preventDefault();
+
+      // Honeypot guard — silent success to bots
+      const gotcha = (form.elements.namedItem('_gotcha') as HTMLInputElement | null)?.value;
+      if (gotcha) {
+        status.dataset.state = 'ok';
+        status.textContent = 'Thanks — your message is on its way.';
+        form.reset();
+        return;
+      }
+
+      status.dataset.state = '';
+      status.textContent = '';
+      if (submit) { submit.setAttribute('aria-busy', 'true'); submit.textContent = 'Sending…'; }
+
+      try {
+        const data = new FormData(form);
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          body: data,
+          headers: { Accept: 'application/json' },
+        });
+        if (res.ok) {
+          status.dataset.state = 'ok';
+          status.textContent = 'Thanks — your message is on its way. I’ll respond as soon as I can.';
+          form.reset();
+        } else {
+          const body = await res.json().catch(() => ({} as { error?: string }));
+          status.dataset.state = 'error';
+          status.textContent = body.error
+            ? `Couldn’t send — ${body.error}`
+            : 'Couldn’t send. Please try again in a moment.';
+        }
+      } catch {
+        status.dataset.state = 'error';
+        status.textContent = 'Couldn’t reach the form service. Please try again.';
+      } finally {
+        if (submit) { submit.removeAttribute('aria-busy'); submit.textContent = 'Send message'; }
+      }
+    });
+  }
+</script>

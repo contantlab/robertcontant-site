@@ -1,77 +1,119 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { formatDate, isoDate } from '../lib/format';
 import { SITE } from '../config/site';
+
+const isProd = import.meta.env.PROD;
+const featured = (
+  await getCollection('projects', ({ data }) => data.featured && (isProd ? !data.draft : true))
+).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const capabilities = [
+  {
+    label: 'Detection engineering',
+    detail: 'Sigma, Suricata, Sysmon. Writing rules that actually fire when they should.',
+  },
+  {
+    label: 'Network security',
+    detail: 'Segmentation, traffic visibility, firewall and IDS tuning end-to-end.',
+  },
+  {
+    label: 'OSINT & investigations',
+    detail: 'Building small reliable pipelines for passive collection and entity resolution.',
+  },
+  {
+    label: 'AI-assisted recon',
+    detail: 'Practical use of LLMs in the analyst workflow without losing the rigor.',
+  },
+];
 ---
 
 <BaseLayout>
   <section class="hero page-shell">
     <p class="eyebrow">{SITE.tagline}</p>
+    {/* TODO(bobby): replace with your real positioning statement */}
     <h1 class="hero-headline">
-      {/* TODO(bobby): replace with your real positioning statement */}
       A cybersecurity engineer who actually likes the engineering part.
     </h1>
+    {/* TODO(bobby): replace with your real lede */}
     <p class="hero-lede">
-      {/* TODO(bobby): replace with your real lede */}
-      I build, break, and document — networks, detection pipelines, OSINT tooling,
+      I build, break, and document &mdash; networks, detection pipelines, OSINT tooling,
       and the homelab they all run in. Curious, hands-on, and allergic to buzzword salad.
     </p>
     <div class="hero-cta">
-      <a href={SITE.github} class="cta-link cta-primary">GitHub</a>
+      <a href={SITE.github} class="cta-link cta-primary" rel="me noopener" target="_blank">GitHub</a>
       <a href="/projects/" class="cta-link">Selected work</a>
       <a href="/resume/" class="cta-link">Resume</a>
+      <a href="/contact/" class="cta-link">Contact</a>
     </div>
   </section>
 
-  <section class="featured page-shell">
-    <header class="featured-header">
-      <h2>Selected work</h2>
-      <a href="/projects/" class="featured-all">All projects &rarr;</a>
+  <section class="capabilities page-shell" aria-labelledby="what-i-do">
+    <header class="strip-header">
+      <h2 id="what-i-do" class="strip-title">What I do</h2>
+      <a href="/about/" class="strip-link">More about me &rarr;</a>
     </header>
-
-    <ol class="featured-list" aria-label="Featured projects">
-      {[
-        { n: '01', title: 'Placeholder — home network as a detection lab', tag: 'pfSense · Suricata · Sigma' },
-        { n: '02', title: 'Placeholder — passive OSINT collection pipeline', tag: 'Python · Neo4j · scraping' },
-        { n: '03', title: 'Placeholder — Active Directory detection lab',  tag: 'Sysmon · Sigma · Elastic' },
-      ].map((p) => (
-        <li class="featured-item">
-          <span class="featured-n">{p.n}</span>
-          <span class="featured-title">{p.title}</span>
-          <span class="featured-tag"><code>{p.tag}</code></span>
+    <ul class="capability-grid">
+      {capabilities.map((c) => (
+        <li class="capability">
+          <h3 class="capability-label">{c.label}</h3>
+          <p class="capability-detail">{c.detail}</p>
         </li>
       ))}
-    </ol>
+    </ul>
+  </section>
+
+  <section class="featured page-shell" aria-labelledby="featured-heading">
+    <header class="strip-header">
+      <h2 id="featured-heading" class="strip-title">Selected work</h2>
+      <a href="/projects/" class="strip-link">All projects &rarr;</a>
+    </header>
+
+    {featured.length === 0 ? (
+      <p class="empty">No featured projects yet.</p>
+    ) : (
+      <ol class="featured-list" aria-label="Featured projects">
+        {featured.map((p, i) => (
+          <li class="featured-item">
+            <a href={`/projects/${p.id}/`} class="featured-link">
+              <span class="featured-n">{String(i + 1).padStart(2, '0')}</span>
+              <div class="featured-body">
+                <h3 class="featured-title">{p.data.title}</h3>
+                <p class="featured-summary">{p.data.summary}</p>
+                {p.data.stack.length > 0 && (
+                  <p class="featured-stack"><code>{p.data.stack.join(' · ')}</code></p>
+                )}
+              </div>
+              <time class="featured-date" datetime={isoDate(p.data.date)}>{formatDate(p.data.date)}</time>
+            </a>
+          </li>
+        ))}
+      </ol>
+    )}
   </section>
 </BaseLayout>
 
 <style>
+  /* hero */
   .hero {
     padding-block: clamp(var(--space-10), 12vw, var(--space-16)) var(--space-10);
     max-width: 56rem;
   }
-
-  .hero .eyebrow {
-    margin-bottom: var(--space-4);
-  }
-
-  .hero-headline {
-    margin-bottom: var(--space-5);
-  }
-
+  .hero .eyebrow { margin-bottom: var(--space-4); }
+  .hero-headline { margin-bottom: var(--space-5); }
   .hero-lede {
     font-size: var(--text-lg);
     color: var(--color-ink-muted);
     max-width: var(--measure);
     margin-bottom: var(--space-8);
   }
-
   .hero-cta {
     display: flex;
     flex-wrap: wrap;
     gap: var(--space-4) var(--space-5);
     align-items: center;
   }
-
   .cta-link {
     font-size: var(--text-sm);
     text-decoration: none;
@@ -80,53 +122,67 @@ import { SITE } from '../config/site';
     border-bottom: 1px solid var(--color-rule-strong);
     transition: color var(--transition-fast), border-color var(--transition-fast);
   }
-
   .cta-link::after {
-    content: ' →';
+    content: ' \2192';
     color: var(--color-ink-subtle);
     transition: transform var(--transition-fast), color var(--transition-fast);
     display: inline-block;
   }
+  .cta-link:hover { color: var(--color-accent); border-bottom-color: var(--color-accent); }
+  .cta-link:hover::after { color: var(--color-accent); transform: translateX(2px); }
+  .cta-primary { color: var(--color-accent); border-bottom-color: var(--color-accent); font-weight: 600; }
 
-  .cta-link:hover {
-    color: var(--color-accent);
-    border-bottom-color: var(--color-accent);
-  }
-
-  .cta-link:hover::after {
-    color: var(--color-accent);
-    transform: translateX(2px);
-  }
-
-  .cta-primary {
-    color: var(--color-accent);
-    border-bottom-color: var(--color-accent);
-    font-weight: 600;
-  }
-
-  .featured {
-    padding-block: var(--space-10);
-    border-top: 1px solid var(--color-rule);
-  }
-
-  .featured-header {
+  /* shared strip header (used by capabilities + featured) */
+  .strip-header {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     gap: var(--space-5);
     margin-bottom: var(--space-8);
   }
-
-  .featured-header h2 {
-    font-size: var(--text-2xl);
-  }
-
-  .featured-all {
+  .strip-title { font-size: var(--text-2xl); }
+  .strip-link {
     font-size: var(--text-sm);
     text-decoration: none;
     color: var(--color-ink-muted);
   }
-  .featured-all:hover { color: var(--color-accent); }
+  .strip-link:hover { color: var(--color-accent); }
+
+  /* capabilities */
+  .capabilities {
+    padding-block: var(--space-10);
+    border-top: 1px solid var(--color-rule);
+  }
+  .capability-grid {
+    list-style: none;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-6) var(--space-8);
+  }
+  .capability { max-width: 36ch; }
+  .capability-label {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: 600;
+    letter-spacing: 0;
+    color: var(--color-ink);
+    margin-bottom: var(--space-2);
+    padding-bottom: var(--space-2);
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .capability-detail {
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+    line-height: var(--leading-base);
+  }
+
+  /* featured */
+  .featured {
+    padding-block: var(--space-10);
+    border-top: 1px solid var(--color-rule);
+  }
+  .empty { color: var(--color-ink-muted); font-style: italic; }
 
   .featured-list {
     list-style: none;
@@ -134,16 +190,22 @@ import { SITE } from '../config/site';
     display: grid;
     gap: 0;
   }
+  .featured-item { border-top: 1px solid var(--color-rule); }
+  .featured-item:last-child { border-bottom: 1px solid var(--color-rule); }
 
-  .featured-item {
+  .featured-link {
     display: grid;
     grid-template-columns: 3rem 1fr auto;
     gap: var(--space-5);
     align-items: baseline;
     padding-block: var(--space-5);
-    border-top: 1px solid var(--color-rule);
+    text-decoration: none;
+    color: var(--color-ink);
+    transition: background var(--transition-fast);
   }
-  .featured-item:last-child { border-bottom: 1px solid var(--color-rule); }
+  .featured-link:hover {
+    background: color-mix(in oklab, var(--color-accent-soft) 60%, transparent);
+  }
 
   .featured-n {
     font-family: var(--font-mono);
@@ -151,23 +213,40 @@ import { SITE } from '../config/site';
     color: var(--color-ink-subtle);
   }
 
+  .featured-body { max-width: var(--measure); }
+
   .featured-title {
     font-family: var(--font-serif);
     font-size: var(--text-lg);
+    font-weight: 500;
+    margin-bottom: var(--space-2);
     color: var(--color-ink);
   }
+  .featured-link:hover .featured-title { color: var(--color-accent); }
 
-  .featured-tag {
+  .featured-summary {
     color: var(--color-ink-muted);
+    font-size: var(--text-base);
+    margin-bottom: var(--space-2);
+  }
+
+  .featured-stack code {
+    background: var(--color-code-bg);
+    color: var(--color-ink-muted);
+    padding: 1px 8px;
+    border-radius: var(--radius-sm);
+    font-size: var(--text-xs);
+  }
+
+  .featured-date {
+    font-family: var(--font-mono);
     font-size: var(--text-sm);
+    color: var(--color-ink-subtle);
+    white-space: nowrap;
   }
 
   @media (max-width: 640px) {
-    .featured-item {
-      grid-template-columns: 2rem 1fr;
-    }
-    .featured-tag {
-      grid-column: 2;
-    }
+    .featured-link { grid-template-columns: 2rem 1fr; }
+    .featured-date { grid-column: 2; }
   }
 </style>

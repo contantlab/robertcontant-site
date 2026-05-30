@@ -1,0 +1,274 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { RESUME } from '../data/resume';
+import { SITE } from '../config/site';
+---
+
+<BaseLayout
+  title="Resume"
+  description={`Resume for ${SITE.author} — ${RESUME.headline}.`}
+>
+  <article class="resume page-shell">
+    <header class="resume-head">
+      <p class="eyebrow">Resume</p>
+      <h1>{SITE.author}</h1>
+      <p class="resume-role">
+        <span>{RESUME.headline}</span>
+        <span class="dot" aria-hidden="true">·</span>
+        <span>{RESUME.location}</span>
+      </p>
+
+      <div class="resume-actions">
+        {RESUME.pdfPath && (
+          <a class="cta-link cta-primary" href={RESUME.pdfPath} download>
+            Download PDF
+          </a>
+        )}
+        <a class="cta-link" href={SITE.github} rel="me noopener" target="_blank">GitHub</a>
+        <a class="cta-link" href={SITE.linkedin} rel="me noopener" target="_blank">LinkedIn</a>
+        <a class="cta-link" href="/contact/">Contact</a>
+      </div>
+
+      {!RESUME.pdfPath && (
+        <p class="pdf-note">
+          <em>TODO(bobby):</em> drop your PDF at <code>public/resume.pdf</code> and set <code>pdfPath</code> in
+          <code>src/data/resume.ts</code> to enable the download link.
+        </p>
+      )}
+    </header>
+
+    <section class="resume-section">
+      <h2>Summary</h2>
+      <p class="resume-summary">{RESUME.summary}</p>
+    </section>
+
+    <section class="resume-section">
+      <h2>Experience</h2>
+      <ol class="role-list">
+        {RESUME.roles.map((r) => (
+          <li class="role">
+            <header class="role-head">
+              <h3 class="role-title">
+                {r.title} <span class="role-org">&middot; {r.org}</span>
+              </h3>
+              <p class="role-meta">
+                <span>{r.start} &ndash; {r.end}</span>
+                {r.location && <><span class="dot" aria-hidden="true">&middot;</span><span>{r.location}</span></>}
+              </p>
+            </header>
+            <ul class="role-bullets">
+              {r.bullets.map((b) => <li>{b}</li>)}
+            </ul>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="resume-section">
+      <h2>Education</h2>
+      <ul class="edu-list">
+        {RESUME.education.map((e) => (
+          <li class="edu">
+            <p class="edu-line">
+              <span class="edu-degree">{e.degree}</span>
+              <span class="dot" aria-hidden="true">&middot;</span>
+              <span>{e.org}</span>
+              {(e.start || e.end) && (
+                <>
+                  <span class="dot" aria-hidden="true">&middot;</span>
+                  <span class="edu-dates">{e.start ?? ''}{e.start && e.end ? ' – ' : ''}{e.end ?? ''}</span>
+                </>
+              )}
+            </p>
+            {e.notes && <p class="edu-notes">{e.notes}</p>}
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="resume-section">
+      <h2>Certifications</h2>
+      <ul class="cert-list">
+        {RESUME.certifications.map((c) => (
+          <li class="cert">
+            <span class="cert-name">
+              {c.link ? <a href={c.link} rel="noopener" target="_blank">{c.name}</a> : c.name}
+            </span>
+            <span class="dot" aria-hidden="true">&middot;</span>
+            <span class="cert-issuer">{c.issuer}</span>
+            {c.year && <><span class="dot" aria-hidden="true">&middot;</span><span class="cert-year">{c.year}</span></>}
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="resume-section">
+      <h2>Skills</h2>
+      <dl class="skill-list">
+        {RESUME.skills.map((s) => (
+          <div class="skill-row">
+            <dt>{s.label}</dt>
+            <dd>{s.items.join(' · ')}</dd>
+          </div>
+        ))}
+      </dl>
+    </section>
+  </article>
+</BaseLayout>
+
+<style>
+  .resume {
+    padding-block: clamp(var(--space-10), 10vw, var(--space-12)) var(--space-10);
+    max-width: 52rem;
+  }
+
+  .resume-head { margin-bottom: var(--space-10); }
+  .resume-head .eyebrow { margin-bottom: var(--space-4); }
+  .resume-head h1 {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-3);
+  }
+  .resume-role {
+    font-size: var(--text-lg);
+    color: var(--color-ink-muted);
+    margin-bottom: var(--space-6);
+    display: inline-flex;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+  .dot { color: var(--color-ink-subtle); }
+
+  .resume-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-5);
+    align-items: center;
+  }
+  .cta-link {
+    font-size: var(--text-sm);
+    text-decoration: none;
+    color: var(--color-ink);
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--color-rule-strong);
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+  }
+  .cta-link::after { content: ' \2193'; color: var(--color-ink-subtle); }
+  .cta-link[target='_blank']::after,
+  .cta-link[href^="/contact"]::after { content: ' \2192'; }
+  .cta-link:hover { color: var(--color-accent); border-bottom-color: var(--color-accent); }
+  .cta-link:hover::after { color: var(--color-accent); }
+  .cta-primary { color: var(--color-accent); border-bottom-color: var(--color-accent); font-weight: 600; }
+
+  .pdf-note {
+    margin-top: var(--space-5);
+    padding: var(--space-3) var(--space-4);
+    background: var(--color-accent-soft);
+    border-left: 2px solid var(--color-accent);
+    color: var(--color-ink-muted);
+    font-size: var(--text-sm);
+  }
+  .pdf-note code {
+    font-size: 0.92em;
+  }
+
+  .resume-section {
+    padding-block: var(--space-8);
+    border-top: 1px solid var(--color-rule);
+  }
+  .resume-section h2 {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-5);
+  }
+  .resume-summary {
+    color: var(--color-ink);
+    max-width: var(--measure);
+  }
+
+  /* roles */
+  .role-list { list-style: none; margin: 0; display: grid; gap: var(--space-8); }
+  .role-head { margin-bottom: var(--space-3); }
+  .role-title {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    font-weight: 500;
+    color: var(--color-ink);
+    margin-bottom: 2px;
+  }
+  .role-org { color: var(--color-ink-muted); font-weight: 400; }
+  .role-meta {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-ink-subtle);
+    display: inline-flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+  .role-bullets {
+    padding-left: var(--space-5);
+    color: var(--color-ink);
+  }
+  .role-bullets li { margin-block: var(--space-2); max-width: var(--measure); }
+
+  /* education */
+  .edu-list { list-style: none; margin: 0; display: grid; gap: var(--space-5); }
+  .edu-line {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: baseline;
+  }
+  .edu-degree { font-weight: 600; }
+  .edu-dates { font-family: var(--font-mono); font-size: 0.92em; color: var(--color-ink-subtle); }
+  .edu-notes { color: var(--color-ink-muted); margin-top: var(--space-2); font-size: var(--text-sm); }
+
+  /* certifications */
+  .cert-list {
+    list-style: none;
+    margin: 0;
+    display: grid;
+    gap: var(--space-3);
+  }
+  .cert {
+    display: inline-flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    align-items: baseline;
+  }
+  .cert-name { font-weight: 600; color: var(--color-ink); }
+  .cert-issuer { color: var(--color-ink-muted); }
+  .cert-year { font-family: var(--font-mono); font-size: 0.92em; color: var(--color-ink-subtle); }
+
+  /* skills */
+  .skill-list { margin: 0; display: grid; gap: var(--space-4); }
+  .skill-row {
+    display: grid;
+    grid-template-columns: 14rem 1fr;
+    gap: var(--space-5);
+    align-items: baseline;
+    padding-block: var(--space-3);
+    border-bottom: 1px solid var(--color-rule);
+  }
+  .skill-row:last-child { border-bottom: 0; }
+  .skill-row dt {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+  .skill-row dd {
+    margin: 0;
+    color: var(--color-ink);
+    font-size: var(--text-sm);
+  }
+
+  @media (max-width: 640px) {
+    .skill-row { grid-template-columns: 1fr; gap: var(--space-2); }
+  }
+
+  /* print: make /resume genuinely printable in case Bobby wants the PDF from the page itself */
+  @media print {
+    :global(.site-header), :global(.site-footer), .resume-actions, .pdf-note { display: none !important; }
+    .resume { max-width: none; padding: 0; }
+    .resume-section { break-inside: avoid; }
+  }
+</style>

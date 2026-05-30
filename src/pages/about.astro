@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { Content as AboutContent } from '../content/pages/about.mdx';
+---
+
+<BaseLayout
+  title="About"
+  description="Robert Contant — cybersecurity engineer working across networking, detection, OSINT, and AI. The fuller story."
+>
+  <section class="about page-shell">
+    <header class="about-head">
+      <p class="eyebrow">About</p>
+      {/* TODO(bobby): replace headline with your real positioning */}
+      <h1>Engineer first. Compliance-literate second.</h1>
+    </header>
+
+    <div class="prose about-body">
+      <AboutContent />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .about {
+    padding-block: clamp(var(--space-10), 10vw, var(--space-12)) var(--space-10);
+    max-width: 48rem;
+  }
+
+  .about-head { margin-bottom: var(--space-10); }
+  .about-head .eyebrow { margin-bottom: var(--space-4); }
+  .about-head h1 {
+    font-size: var(--text-4xl);
+    max-width: var(--measure);
+  }
+
+  .about-body :global(h2) {
+    font-size: var(--text-2xl);
+    margin-block: var(--space-8) var(--space-3);
+  }
+  .about-body :global(h3) {
+    font-size: var(--text-xl);
+    margin-block: var(--space-6) var(--space-2);
+  }
+  .about-body :global(p),
+  .about-body :global(ul),
+  .about-body :global(ol),
+  .about-body :global(blockquote) {
+    margin-block: var(--space-4);
+  }
+  .about-body :global(blockquote) {
+    border-left: 2px solid var(--color-rule-strong);
+    padding-left: var(--space-4);
+    color: var(--color-ink-muted);
+    font-style: italic;
+  }
+  .about-body :global(ul), .about-body :global(ol) { padding-left: var(--space-5); }
+  .about-body :global(li) { margin-block: var(--space-2); }
+  .about-body :global(li) :global(strong) { color: var(--color-ink); }
+</style>

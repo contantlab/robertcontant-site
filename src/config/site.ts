@@ -16,6 +16,13 @@ export const SITE = {
    */
   email: 'bobby@contantsolutions.com',
   defaultOgImage: '/og-default.png',
+  /**
+   * TODO(bobby): replace with your real Formspree form endpoint after creating
+   * the form at https://formspree.io. Format: 'https://formspree.io/f/XXXXXXXX'.
+   * In the Formspree dashboard, set the destination email to bobby@contantsolutions.com.
+   * Leave as null to disable form submission (the page will show a friendly message).
+   */
+  formspreeEndpoint: null as string | null,
 } as const;
 
 export const NAV = [
