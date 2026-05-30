@@ -1,0 +1,71 @@
+---
+import { SITE } from '../config/site';
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer">
+  <div class="page-shell footer-inner">
+    <div class="footer-meta">
+      <span class="footer-name">{SITE.title}</span>
+      <span class="footer-sep" aria-hidden="true">·</span>
+      <span class="footer-year">&copy; {year}</span>
+    </div>
+
+    <ul class="footer-links">
+      <li><a href={SITE.github} rel="me noopener" target="_blank">GitHub</a></li>
+      <li><a href={SITE.linkedin} rel="me noopener" target="_blank">LinkedIn</a></li>
+      <li><a href={`mailto:${SITE.email}`}>Email</a></li>
+    </ul>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--color-rule);
+    margin-top: var(--space-16);
+    padding-block: var(--space-6);
+    color: var(--color-ink-muted);
+    font-size: var(--text-sm);
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-6);
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .footer-meta {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--space-2);
+  }
+
+  .footer-name {
+    font-family: var(--font-serif);
+    color: var(--color-ink);
+  }
+
+  .footer-sep { color: var(--color-ink-subtle); }
+
+  .footer-links {
+    list-style: none;
+    display: flex;
+    gap: var(--space-5);
+    margin: 0;
+  }
+
+  .footer-links a {
+    color: var(--color-ink-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  .footer-links a:hover {
+    color: var(--color-ink);
+    border-bottom-color: var(--color-rule-strong);
+  }
+</style>

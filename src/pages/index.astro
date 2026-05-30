@@ -1,17 +1,173 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../config/site';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout>
+  <section class="hero page-shell">
+    <p class="eyebrow">{SITE.tagline}</p>
+    <h1 class="hero-headline">
+      {/* TODO(bobby): replace with your real positioning statement */}
+      A cybersecurity engineer who actually likes the engineering part.
+    </h1>
+    <p class="hero-lede">
+      {/* TODO(bobby): replace with your real lede */}
+      I build, break, and document — networks, detection pipelines, OSINT tooling,
+      and the homelab they all run in. Curious, hands-on, and allergic to buzzword salad.
+    </p>
+    <div class="hero-cta">
+      <a href={SITE.github} class="cta-link cta-primary">GitHub</a>
+      <a href="/projects/" class="cta-link">Selected work</a>
+      <a href="/resume/" class="cta-link">Resume</a>
+    </div>
+  </section>
+
+  <section class="featured page-shell">
+    <header class="featured-header">
+      <h2>Selected work</h2>
+      <a href="/projects/" class="featured-all">All projects &rarr;</a>
+    </header>
+
+    <ol class="featured-list" aria-label="Featured projects">
+      {[
+        { n: '01', title: 'Placeholder — home network as a detection lab', tag: 'pfSense · Suricata · Sigma' },
+        { n: '02', title: 'Placeholder — passive OSINT collection pipeline', tag: 'Python · Neo4j · scraping' },
+        { n: '03', title: 'Placeholder — Active Directory detection lab',  tag: 'Sysmon · Sigma · Elastic' },
+      ].map((p) => (
+        <li class="featured-item">
+          <span class="featured-n">{p.n}</span>
+          <span class="featured-title">{p.title}</span>
+          <span class="featured-tag"><code>{p.tag}</code></span>
+        </li>
+      ))}
+    </ol>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding-block: clamp(var(--space-10), 12vw, var(--space-16)) var(--space-10);
+    max-width: 56rem;
+  }
+
+  .hero .eyebrow {
+    margin-bottom: var(--space-4);
+  }
+
+  .hero-headline {
+    margin-bottom: var(--space-5);
+  }
+
+  .hero-lede {
+    font-size: var(--text-lg);
+    color: var(--color-ink-muted);
+    max-width: var(--measure);
+    margin-bottom: var(--space-8);
+  }
+
+  .hero-cta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4) var(--space-5);
+    align-items: center;
+  }
+
+  .cta-link {
+    font-size: var(--text-sm);
+    text-decoration: none;
+    color: var(--color-ink);
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid var(--color-rule-strong);
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+  }
+
+  .cta-link::after {
+    content: ' →';
+    color: var(--color-ink-subtle);
+    transition: transform var(--transition-fast), color var(--transition-fast);
+    display: inline-block;
+  }
+
+  .cta-link:hover {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+
+  .cta-link:hover::after {
+    color: var(--color-accent);
+    transform: translateX(2px);
+  }
+
+  .cta-primary {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+    font-weight: 600;
+  }
+
+  .featured {
+    padding-block: var(--space-10);
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .featured-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-5);
+    margin-bottom: var(--space-8);
+  }
+
+  .featured-header h2 {
+    font-size: var(--text-2xl);
+  }
+
+  .featured-all {
+    font-size: var(--text-sm);
+    text-decoration: none;
+    color: var(--color-ink-muted);
+  }
+  .featured-all:hover { color: var(--color-accent); }
+
+  .featured-list {
+    list-style: none;
+    margin: 0;
+    display: grid;
+    gap: 0;
+  }
+
+  .featured-item {
+    display: grid;
+    grid-template-columns: 3rem 1fr auto;
+    gap: var(--space-5);
+    align-items: baseline;
+    padding-block: var(--space-5);
+    border-top: 1px solid var(--color-rule);
+  }
+  .featured-item:last-child { border-bottom: 1px solid var(--color-rule); }
+
+  .featured-n {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-ink-subtle);
+  }
+
+  .featured-title {
+    font-family: var(--font-serif);
+    font-size: var(--text-lg);
+    color: var(--color-ink);
+  }
+
+  .featured-tag {
+    color: var(--color-ink-muted);
+    font-size: var(--text-sm);
+  }
+
+  @media (max-width: 640px) {
+    .featured-item {
+      grid-template-columns: 2rem 1fr;
+    }
+    .featured-tag {
+      grid-column: 2;
+    }
+  }
+</style>
