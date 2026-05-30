@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+// Intentionally NOT importing SITE.email here — keep the address out of the
+// client bundle. The real form (Phase 4) will POST to a form provider whose
+// dashboard holds the destination email.
+---
+
+<BaseLayout
+  title="Contact"
+  description="Get in touch with Robert Contant."
+  noindex
+>
+  <section class="contact page-shell">
+    <p class="eyebrow">Contact</p>
+    <h1>Get in touch.</h1>
+    <p class="lede">
+      A short form — coming online with the rest of the site in the next phase.
+    </p>
+    <p class="placeholder">
+      <em>TODO (Phase 4):</em> wire the form to a provider that delivers messages
+      without exposing the destination address in client-rendered HTML.
+    </p>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact {
+    padding-block: clamp(var(--space-10), 10vw, var(--space-12)) var(--space-10);
+    max-width: 48rem;
+  }
+  .contact .eyebrow { margin-bottom: var(--space-4); }
+  .contact h1 {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-5);
+  }
+  .lede {
+    font-size: var(--text-lg);
+    color: var(--color-ink-muted);
+    max-width: var(--measure);
+  }
+  .placeholder {
+    margin-top: var(--space-8);
+    padding: var(--space-4) var(--space-5);
+    border-left: 2px solid var(--color-accent);
+    background: var(--color-accent-soft);
+    color: var(--color-ink-muted);
+    font-size: var(--text-sm);
+  }
+</style>
