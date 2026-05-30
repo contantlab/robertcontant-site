@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { formatDate, isoDate } from '../../lib/format';
+
+const isProd = import.meta.env.PROD;
+const projects = (
+  await getCollection('projects', ({ data }) => (isProd ? !data.draft : true))
+).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout
+  title="Projects"
+  description="Selected work — detection engineering, OSINT, networking, homelab."
+>
+  <section class="projects page-shell">
+    <header class="projects-header">
+      <p class="eyebrow">Projects</p>
+      <h1>Selected work.</h1>
+      <p class="lede">
+        Things I've built or broken on purpose. Most of these live in the homelab;
+        a few have crossed over into work I can write about.
+      </p>
+    </header>
+
+    {projects.length === 0 && (
+      <p class="empty">No projects yet.</p>
+    )}
+
+    <ol class="project-list" aria-label="All projects">
+      {projects.map((p) => (
+        <li class="project-card">
+          <a class="project-link" href={`/projects/${p.id}/`}>
+            <div class="project-meta">
+              <time datetime={isoDate(p.data.date)}>{formatDate(p.data.date)}</time>
+              {p.data.featured && <span class="badge">Featured</span>}
+              {p.data.draft && <span class="badge badge-draft">Draft</span>}
+            </div>
+            <h2 class="project-title">{p.data.title}</h2>
+            <p class="project-summary">{p.data.summary}</p>
+            {p.data.tags.length > 0 && (
+              <ul class="project-tags" aria-label="Tags">
+                {p.data.tags.map((t) => <li><code>{t}</code></li>)}
+              </ul>
+            )}
+          </a>
+        </li>
+      ))}
+    </ol>
+  </section>
+</BaseLayout>
+
+<style>
+  .projects { padding-block: clamp(var(--space-10), 10vw, var(--space-12)) var(--space-10); }
+
+  .projects-header { max-width: 56rem; margin-bottom: var(--space-10); }
+  .projects-header .eyebrow { margin-bottom: var(--space-4); }
+  .projects-header h1 { font-size: var(--text-4xl); margin-bottom: var(--space-5); }
+  .lede {
+    font-size: var(--text-lg);
+    color: var(--color-ink-muted);
+    max-width: var(--measure);
+  }
+
+  .empty {
+    color: var(--color-ink-muted);
+    font-style: italic;
+  }
+
+  .project-list {
+    list-style: none;
+    margin: 0;
+    display: grid;
+    gap: 0;
+  }
+
+  .project-card {
+    border-top: 1px solid var(--color-rule);
+  }
+  .project-card:last-child { border-bottom: 1px solid var(--color-rule); }
+
+  .project-link {
+    display: block;
+    text-decoration: none;
+    color: var(--color-ink);
+    padding-block: var(--space-6);
+    transition: background var(--transition-fast);
+  }
+
+  .project-link:hover {
+    background: color-mix(in oklab, var(--color-accent-soft) 60%, transparent);
+  }
+
+  .project-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    color: var(--color-ink-muted);
+    font-size: var(--text-sm);
+    margin-bottom: var(--space-3);
+  }
+
+  .badge {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    padding: 1px 6px;
+    border-radius: var(--radius-sm);
+  }
+
+  .badge-draft {
+    color: var(--color-ink-muted);
+    border-color: var(--color-rule-strong);
+  }
+
+  .project-title {
+    font-size: var(--text-2xl);
+    margin-bottom: var(--space-3);
+  }
+
+  .project-link:hover .project-title { color: var(--color-accent); }
+
+  .project-summary {
+    color: var(--color-ink-muted);
+    max-width: var(--measure);
+    margin-bottom: var(--space-4);
+  }
+
+  .project-tags {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: 0;
+  }
+
+  .project-tags code {
+    background: var(--color-code-bg);
+    color: var(--color-ink-muted);
+    padding: 1px 8px;
+    border-radius: var(--radius-sm);
+    font-size: var(--text-xs);
+  }
+</style>

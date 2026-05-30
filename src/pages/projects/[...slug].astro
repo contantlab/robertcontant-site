@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection, render } from 'astro:content';
+import { formatDate, isoDate, readingTime } from '../../lib/format';
+
+export async function getStaticPaths() {
+  const isProd = import.meta.env.PROD;
+  const entries = await getCollection('projects', ({ data }) => (isProd ? !data.draft : true));
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const rt = readingTime(entry.body ?? '');
+---
+
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.summary}
+  noindex={entry.data.draft}
+>
+  <article class="project page-shell">
+    <header class="project-head">
+      <p class="eyebrow"><a href="/projects/">Projects</a></p>
+      <h1>{entry.data.title}</h1>
+      <p class="summary">{entry.data.summary}</p>
+
+      <dl class="meta">
+        <div>
+          <dt>Published</dt>
+          <dd><time datetime={isoDate(entry.data.date)}>{formatDate(entry.data.date)}</time></dd>
+        </div>
+        {entry.data.stack.length > 0 && (
+          <div>
+            <dt>Stack</dt>
+            <dd>{entry.data.stack.join(' · ')}</dd>
+          </div>
+        )}
+        {entry.data.tags.length > 0 && (
+          <div>
+            <dt>Tags</dt>
+            <dd>{entry.data.tags.join(' · ')}</dd>
+          </div>
+        )}
+        <div>
+          <dt>Reading</dt>
+          <dd>{rt.label}</dd>
+        </div>
+      </dl>
+    </header>
+
+    <div class="prose project-body">
+      <Content />
+    </div>
+
+    <footer class="project-foot">
+      <a class="back-link" href="/projects/">&larr; All projects</a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .project {
+    padding-block: clamp(var(--space-10), 10vw, var(--space-12)) var(--space-10);
+    max-width: 52rem;
+  }
+
+  .project-head { margin-bottom: var(--space-10); }
+  .project-head .eyebrow { margin-bottom: var(--space-4); }
+  .project-head .eyebrow a {
+    color: var(--color-ink-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+  }
+  .project-head .eyebrow a:hover {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+
+  .project-head h1 {
+    font-size: var(--text-4xl);
+    margin-bottom: var(--space-4);
+  }
+
+  .summary {
+    font-size: var(--text-lg);
+    color: var(--color-ink-muted);
+    max-width: var(--measure);
+    margin-bottom: var(--space-6);
+  }
+
+  .meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: var(--space-4) var(--space-6);
+    padding-block: var(--space-5);
+    border-block: 1px solid var(--color-rule);
+    margin: 0;
+  }
+
+  .meta dt {
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--color-ink-subtle);
+    margin-bottom: 2px;
+  }
+
+  .meta dd {
+    margin: 0;
+    font-size: var(--text-sm);
+    color: var(--color-ink);
+  }
+
+  .project-body :global(h2) {
+    font-size: var(--text-2xl);
+    margin-block: var(--space-8) var(--space-3);
+  }
+  .project-body :global(h3) {
+    font-size: var(--text-xl);
+    margin-block: var(--space-6) var(--space-2);
+  }
+  .project-body :global(p),
+  .project-body :global(ul),
+  .project-body :global(ol),
+  .project-body :global(blockquote) {
+    margin-block: var(--space-4);
+  }
+  .project-body :global(blockquote) {
+    border-left: 2px solid var(--color-rule-strong);
+    padding-left: var(--space-4);
+    color: var(--color-ink-muted);
+    font-style: italic;
+  }
+  .project-body :global(ul), .project-body :global(ol) { padding-left: var(--space-5); }
+  .project-body :global(li) { margin-block: var(--space-2); }
+  .project-body :global(pre) { margin-block: var(--space-5); }
+
+  .project-foot {
+    margin-top: var(--space-10);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-rule);
+  }
+
+  .back-link {
+    color: var(--color-ink-muted);
+    text-decoration: none;
+    border-bottom: 1px solid var(--color-rule-strong);
+    padding-bottom: 2px;
+  }
+  .back-link:hover { color: var(--color-accent); border-color: var(--color-accent); }
+</style>

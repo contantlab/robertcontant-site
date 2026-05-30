@@ -1,0 +1,27 @@
+---
+title: "Active Directory detection lab"
+summary: "A throwaway AD lab for practicing the loud half of detection engineering — what attacks look like on the wire and in logs."
+date: 2025-04-21
+tags: ["detection-engineering", "active-directory", "homelab"]
+stack: ["Windows Server", "Sysmon", "Sigma", "Elastic", "Atomic Red Team"]
+featured: false
+draft: true
+---
+
+> **PLACEHOLDER + DRAFT** — this entry exists to verify draft filtering. Bobby to replace and flip `draft: false` when ready.
+
+## Problem & context
+
+The half of detection engineering where you have to make the attack happen yourself, in a place that can't blow up anything that matters.
+
+## Approach
+
+Containerized lab? VMs? Sysmon configuration? Spoiler: VMs, the SwiftOnSecurity Sysmon config, and ARTEMIS for orchestrating Atomic Red Team techniques.
+
+## Implementation
+
+The lab topology. Which techniques mapped to which detections. The ones I couldn't reliably catch and why.
+
+## Outcome & lessons
+
+The gap between "I have a rule for that" and "the rule fires when it should." That's the whole job.

@@ -1,0 +1,118 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { formatDate, isoDate } from '../../lib/format';
+
+const isProd = import.meta.env.PROD;
+const posts = (
+  await getCollection('blog', ({ data }) => (isProd ? !data.draft : true))
+).sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+---
+
+<BaseLayout
+  title="Blog"
+  description="Notes from the homelab and the field — detection engineering, OSINT, networking."
+>
+  <section class="blog page-shell">
+    <header class="blog-header">
+      <p class="eyebrow">Writing</p>
+      <h1>Notes from the homelab.</h1>
+      <p class="lede">
+        Short pieces on what I'm learning, what surprised me, and what I'd do differently.
+      </p>
+    </header>
+
+    {posts.length === 0 && (
+      <p class="empty">No posts yet.</p>
+    )}
+
+    <ol class="post-list" aria-label="All posts">
+      {posts.map((p) => (
+        <li class="post-row">
+          <a class="post-link" href={`/blog/${p.id}/`}>
+            <time class="post-date" datetime={isoDate(p.data.date)}>{formatDate(p.data.date)}</time>
+            <span class="post-title">{p.data.title}</span>
+            {p.data.draft && <span class="badge badge-draft">Draft</span>}
+          </a>
+          <p class="post-desc">{p.data.description}</p>
+        </li>
+      ))}
+    </ol>
+  </section>
+</BaseLayout>
+
+<style>
+  .blog { padding-block: clamp(var(--space-10), 10vw, var(--space-12)) var(--space-10); }
+
+  .blog-header { max-width: 56rem; margin-bottom: var(--space-10); }
+  .blog-header .eyebrow { margin-bottom: var(--space-4); }
+  .blog-header h1 { font-size: var(--text-4xl); margin-bottom: var(--space-5); }
+  .lede {
+    font-size: var(--text-lg);
+    color: var(--color-ink-muted);
+    max-width: var(--measure);
+  }
+
+  .empty { color: var(--color-ink-muted); font-style: italic; }
+
+  .post-list {
+    list-style: none;
+    margin: 0;
+    display: grid;
+    gap: 0;
+  }
+
+  .post-row {
+    padding-block: var(--space-5);
+    border-top: 1px solid var(--color-rule);
+  }
+  .post-row:last-child { border-bottom: 1px solid var(--color-rule); }
+
+  .post-link {
+    display: grid;
+    grid-template-columns: 8rem 1fr auto;
+    gap: var(--space-5);
+    align-items: baseline;
+    text-decoration: none;
+    color: var(--color-ink);
+  }
+
+  .post-date {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-ink-subtle);
+  }
+
+  .post-title {
+    font-family: var(--font-serif);
+    font-size: var(--text-xl);
+    transition: color var(--transition-fast);
+  }
+  .post-link:hover .post-title { color: var(--color-accent); }
+
+  .badge-draft {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    letter-spacing: var(--tracking-caps);
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    border: 1px solid var(--color-rule-strong);
+    padding: 1px 6px;
+    border-radius: var(--radius-sm);
+  }
+
+  .post-desc {
+    margin-top: var(--space-2);
+    margin-left: calc(8rem + var(--space-5));
+    color: var(--color-ink-muted);
+    max-width: var(--measure);
+  }
+
+  @media (max-width: 640px) {
+    .post-link {
+      grid-template-columns: 1fr auto;
+    }
+    .post-date { grid-column: 1 / -1; }
+    .post-desc { margin-left: 0; }
+  }
+</style>

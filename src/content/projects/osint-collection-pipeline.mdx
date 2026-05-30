@@ -1,0 +1,33 @@
+---
+title: "Passive OSINT collection pipeline"
+summary: "A small Python pipeline that ingests public sources, normalizes entities, and pushes them into a graph so I can ask 'who connects to whom?' without leaving the keyboard."
+date: 2025-07-02
+tags: ["osint", "python", "graph"]
+stack: ["Python", "Playwright", "Neo4j", "DuckDB"]
+featured: true
+draft: false
+---
+
+> **PLACEHOLDER** — Bobby to replace this body.
+
+## Problem & context
+
+The investigative question that motivated the build, and why off-the-shelf OSINT tooling didn't fit.
+
+## Approach
+
+Why passive over active. Why graph over relational. The threat model for "don't get yourself blocklisted while learning."
+
+## Implementation
+
+Scrapers, parsing, entity resolution, and the Neo4j schema. Where I cut corners and what those corners cost me later.
+
+```python
+# placeholder snippet
+def normalize_handle(raw: str) -> str:
+    return raw.strip().lower().lstrip("@")
+```
+
+## Outcome & lessons
+
+What the pipeline taught me about both OSINT *and* about building small reliable systems.
