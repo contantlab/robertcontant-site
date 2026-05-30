@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Robert Contant — Cybersecurity engineer">
+  <!-- background -->
+  <rect width="1200" height="630" fill="#FAF7F1"/>
+
+  <!-- top accent rule -->
+  <rect x="80" y="110" width="64" height="3" fill="#0E7C86"/>
+
+  <!-- eyebrow -->
+  <text x="80" y="165" font-family="Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif" font-size="26" font-weight="600" letter-spacing="3.5" fill="#5A554C">CYBERSECURITY ENGINEER</text>
+
+  <!-- name (serif display) -->
+  <text x="80" y="320" font-family="'Source Serif 4', 'Iowan Old Style', Palatino, Georgia, serif" font-size="120" font-weight="500" letter-spacing="-3" fill="#1A1814">Robert Contant</text>
+
+  <!-- tagline (serif italic) -->
+  <text x="80" y="395" font-family="'Source Serif 4', 'Iowan Old Style', Palatino, Georgia, serif" font-size="36" font-weight="400" font-style="italic" fill="#5A554C">Networking. Detection. OSINT. AI.</text>
+
+  <!-- bottom-left URL (mono) -->
+  <text x="80" y="565" font-family="'JetBrains Mono', ui-monospace, Consolas, monospace" font-size="22" fill="#8A8478">robertcontant.com</text>
+
+  <!-- bottom-right accent (rule + dot) -->
+  <rect x="1056" y="556" width="40" height="3" fill="#E5DFD2"/>
+  <circle cx="1108" cy="557" r="6" fill="#0E7C86"/>
+</svg>

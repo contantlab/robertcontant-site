@@ -15,7 +15,7 @@ export const SITE = {
    * The /contact/ form routes messages here via the form provider's backend.
    */
   email: 'bobby@contantsolutions.com',
-  defaultOgImage: '/og-default.png',
+  defaultOgImage: '/og-default.svg',
   /**
    * TODO(bobby): replace with your real Formspree form endpoint after creating
    * the form at https://formspree.io. Format: 'https://formspree.io/f/XXXXXXXX'.

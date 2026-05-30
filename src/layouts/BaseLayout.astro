@@ -22,6 +22,15 @@ const {
 const pageTitle = title ? `${title} — ${SITE.title}` : `${SITE.title} — ${SITE.tagline}`;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).toString();
 const ogImageAbs = new URL(ogImage, Astro.site ?? SITE.url).toString();
+
+const personJsonLd = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: SITE.author,
+  url: SITE.url,
+  jobTitle: SITE.tagline,
+  sameAs: [SITE.github, SITE.linkedin],
+});
 ---
 
 <!doctype html>
@@ -51,13 +60,14 @@ const ogImageAbs = new URL(ogImage, Astro.site ?? SITE.url).toString();
     <meta name="twitter:image" content={ogImageAbs} />
 
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="alternate icon" href="/favicon.ico" />
 
     <link rel="preload" href="/fonts/InterVariable.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="/fonts/SourceSerif4Variable-Roman.woff2" as="font" type="font/woff2" crossorigin />
 
     <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator} />
+
+    <script type="application/ld+json" set:html={personJsonLd} />
 
     {/* Inline theme setup to avoid FOUC: runs before <body> paints */}
     <script is:inline>
