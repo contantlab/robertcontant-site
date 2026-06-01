@@ -1,0 +1,13 @@
+// Cloudflare Workers with Static Assets config.
+// This file is required for `wrangler deploy` / Workers Builds.
+//
+// We're a fully static site (Astro static output) — no server worker, just
+// `assets.directory` pointing at the build output.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "robertcontant-site",
+  "compatibility_date": "2026-06-01",
+  "assets": {
+    "directory": "./dist"
+  }
+}
