@@ -11,41 +11,48 @@ const featured = (
 
 const capabilities = [
   {
-    label: 'Detection engineering',
-    detail: 'Sigma, Suricata, Sysmon. Writing rules that actually fire when they should.',
+    label: 'Security Engineering',
+    detail: 'Hardening M365 & Azure, identity and access, detection and response, vulnerability management.',
   },
   {
-    label: 'Network security',
-    detail: 'Segmentation, traffic visibility, firewall and IDS tuning end-to-end.',
+    label: 'Security Operations & IR',
+    detail: 'SOC oversight, incident response, threat investigation, security monitoring.',
   },
   {
-    label: 'OSINT & investigations',
-    detail: 'Building small reliable pipelines for passive collection and entity resolution.',
+    label: 'GRC Foundation',
+    detail: 'ISO 27001, SOC 1/2, ISAE 3402, GDPR, NIS 2, audit readiness, vendor risk.',
   },
   {
-    label: 'AI-assisted recon',
-    detail: 'Practical use of LLMs in the analyst workflow without losing the rigor.',
+    label: 'Build & Automate',
+    detail: 'Python, AI-powered workflows, OSINT tooling, self-hosted infrastructure.',
   },
 ];
 ---
 
 <BaseLayout>
   <section class="hero page-shell">
-    <p class="eyebrow">{SITE.tagline}</p>
-    {/* TODO(bobby): replace with your real positioning statement */}
+    <p class="eyebrow">Cybersecurity Engineer &middot; Builder</p>
     <h1 class="hero-headline">
-      A cybersecurity engineer who actually likes the engineering part.
+      I secure systems, investigate risk, and build tools that make security work.
     </h1>
-    {/* TODO(bobby): replace with your real lede */}
     <p class="hero-lede">
-      I build, break, and document &mdash; networks, detection pipelines, OSINT tooling,
-      and the homelab they all run in. Curious, hands-on, and allergic to buzzword salad.
+      I&rsquo;m Bobby Contant &mdash; a cybersecurity and information assurance professional
+      moving deeper into hands-on security engineering. I work across cloud security,
+      identity, detection and response, OSINT, and AI-powered automation, with a
+      foundation in ISO&nbsp;27001, SOC&nbsp;2, and GDPR. I like making security practical:
+      hardening real systems, cutting manual work, and turning scattered tools and
+      tickets into something that actually works.
     </p>
     <div class="hero-cta">
-      <a href={SITE.github} class="cta-link cta-primary" rel="me noopener" target="_blank">GitHub</a>
-      <a href="/projects/" class="cta-link">Selected work</a>
-      <a href="/resume/" class="cta-link">Resume</a>
-      <a href="/contact/" class="cta-link">Contact</a>
+      <a href="/projects/" class="cta-link cta-primary">View Projects</a>
+      <a href="/blog/" class="cta-link cta-primary">Read the Blog</a>
+    </div>
+    <div class="hero-cta-secondary">
+      <a href={SITE.github} rel="me noopener" target="_blank">GitHub</a>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <a href={SITE.linkedin} rel="me noopener" target="_blank">LinkedIn</a>
+      <span class="dot" aria-hidden="true">&middot;</span>
+      <a href="/resume/">Resume</a>
     </div>
   </section>
 
@@ -131,6 +138,28 @@ const capabilities = [
   .cta-link:hover { color: var(--color-accent); border-bottom-color: var(--color-accent); }
   .cta-link:hover::after { color: var(--color-accent); transform: translateX(2px); }
   .cta-primary { color: var(--color-accent); border-bottom-color: var(--color-accent); font-weight: 600; }
+
+  .hero-cta-secondary {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+    font-size: var(--text-xs);
+    color: var(--color-ink-muted);
+  }
+  .hero-cta-secondary a {
+    color: var(--color-ink-muted);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-block: 2px;
+    transition: color var(--transition-fast), border-color var(--transition-fast);
+  }
+  .hero-cta-secondary a:hover {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+  .hero-cta-secondary .dot { color: var(--color-ink-subtle); }
 
   /* shared strip header (used by capabilities + featured) */
   .strip-header {
