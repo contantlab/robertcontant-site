@@ -104,11 +104,20 @@ const capabilities = [
 <style>
   /* hero */
   .hero {
-    padding-block: clamp(var(--space-10), 12vw, var(--space-16)) var(--space-10);
-    max-width: 56rem;
+    /* match page-shell container width so the section aligns with the
+       capability + featured strips below; tighter top padding so the eyebrow
+       sits closer to the header */
+    padding-block: var(--space-10) var(--space-10);
   }
   .hero .eyebrow { margin-bottom: var(--space-4); }
-  .hero-headline { margin-bottom: var(--space-5); }
+  .hero-headline {
+    /* Long-form sentence headline — pull the size down from the global h1
+       display scale (44–76px) so it doesn't dominate. Cap line length so it
+       wraps to 2–3 lines on desktop instead of one sprawling row. */
+    font-size: var(--text-4xl);
+    max-width: 26ch;
+    margin-bottom: var(--space-5);
+  }
   .hero-lede {
     font-size: var(--text-lg);
     color: var(--color-ink-muted);
