@@ -116,8 +116,8 @@
   --color-bg:           #FAF7F1;
   --color-bg-elevated:  #FFFDF8;
   --color-ink:          #1A1814;
-  --color-ink-muted:    #5A554C;
-  --color-ink-subtle:   #8A8478;
+  --color-ink-muted:    #5A554C;     /* 6.8:1 on bg — AA */
+  --color-ink-subtle:   #6F6A5E;     /* 5.1:1 on bg — AA (was #8A8478, 3.6:1, failed) */
   --color-rule:         #E5DFD2;
   --color-rule-strong:  #C8C0AD;
   --color-accent:       #0E7C86;
@@ -132,8 +132,8 @@
   --color-bg:           #14120E;
   --color-bg-elevated:  #1C1916;
   --color-ink:          #EDE7D8;
-  --color-ink-muted:    #A39C8C;
-  --color-ink-subtle:   #6E695E;
+  --color-ink-muted:    #A39C8C;     /* ~9:1 on bg — AA */
+  --color-ink-subtle:   #8C8676;     /* 5.2:1 on bg — AA (was #6E695E, 3.5:1, failed) */
   --color-rule:         #2A2723;
   --color-rule-strong:  #3D3833;
   --color-accent:       #4FC6CE;
@@ -150,7 +150,7 @@
     --color-bg-elevated:  #1C1916;
     --color-ink:          #EDE7D8;
     --color-ink-muted:    #A39C8C;
-    --color-ink-subtle:   #6E695E;
+    --color-ink-subtle:   #8C8676;
     --color-rule:         #2A2723;
     --color-rule-strong:  #3D3833;
     --color-accent:       #4FC6CE;
