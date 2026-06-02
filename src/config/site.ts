@@ -11,14 +11,11 @@ export const SITE = {
   linkedin: 'https://www.linkedin.com/in/robert-contant/',
   defaultOgImage: '/og-default.svg',
   /**
-   * TODO(bobby): replace with your real Formspree form endpoint after creating
-   * the form at https://formspree.io. Format: 'https://formspree.io/f/XXXXXXXX'.
-   * In the Formspree dashboard, set the destination email to
-   * robert.v.contant@gmail.com. (The destination is held server-side by
-   * Formspree, never in this repo or in served HTML.)
-   * Leave as null to disable form submission (the page will show a friendly message).
+   * Formspree form endpoint for /contact/. Destination email is configured
+   * in the Formspree dashboard (currently robert.v.contant@gmail.com) — held
+   * server-side, never in this repo or served HTML.
    */
-  formspreeEndpoint: null as string | null,
+  formspreeEndpoint: 'https://formspree.io/f/mykagzer' as string | null,
 } as const;
 
 export const NAV = [
