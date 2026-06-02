@@ -20,7 +20,7 @@ import { SITE } from '../config/site';
 
       <div class="resume-actions">
         {RESUME.pdfPath && (
-          <a class="cta-link cta-primary" href={RESUME.pdfPath} download>
+          <a class="cta-link cta-primary" href={RESUME.pdfPath} download={RESUME.pdfDownloadName ?? true}>
             Download PDF
           </a>
         )}
@@ -28,19 +28,21 @@ import { SITE } from '../config/site';
         <a class="cta-link" href={SITE.linkedin} rel="me noopener" target="_blank">LinkedIn</a>
         <a class="cta-link" href="/contact/">Contact</a>
       </div>
-
-      {!RESUME.pdfPath && (
-        <p class="pdf-note">
-          <em>TODO(bobby):</em> drop your PDF at <code>public/resume.pdf</code> and set <code>pdfPath</code> in
-          <code>src/data/resume.ts</code> to enable the download link.
-        </p>
-      )}
     </header>
 
     <section class="resume-section">
       <h2>Summary</h2>
       <p class="resume-summary">{RESUME.summary}</p>
     </section>
+
+    {RESUME.highlights.length > 0 && (
+      <section class="resume-section">
+        <h2>Selected highlights</h2>
+        <ul class="highlight-list">
+          {RESUME.highlights.map((h) => <li>{h}</li>)}
+        </ul>
+      </section>
+    )}
 
     <section class="resume-section">
       <h2>Experience</h2>
@@ -86,21 +88,23 @@ import { SITE } from '../config/site';
       </ul>
     </section>
 
-    <section class="resume-section">
-      <h2>Certifications</h2>
-      <ul class="cert-list">
-        {RESUME.certifications.map((c) => (
-          <li class="cert">
-            <span class="cert-name">
-              {c.link ? <a href={c.link} rel="noopener" target="_blank">{c.name}</a> : c.name}
-            </span>
-            <span class="dot" aria-hidden="true">&middot;</span>
-            <span class="cert-issuer">{c.issuer}</span>
-            {c.year && <><span class="dot" aria-hidden="true">&middot;</span><span class="cert-year">{c.year}</span></>}
-          </li>
-        ))}
-      </ul>
-    </section>
+    {RESUME.certifications.length > 0 && (
+      <section class="resume-section">
+        <h2>Certifications</h2>
+        <ul class="cert-list">
+          {RESUME.certifications.map((c) => (
+            <li class="cert">
+              <span class="cert-name">
+                {c.link ? <a href={c.link} rel="noopener" target="_blank">{c.name}</a> : c.name}
+              </span>
+              <span class="dot" aria-hidden="true">&middot;</span>
+              <span class="cert-issuer">{c.issuer}</span>
+              {c.year && <><span class="dot" aria-hidden="true">&middot;</span><span class="cert-year">{c.year}</span></>}
+            </li>
+          ))}
+        </ul>
+      </section>
+    )}
 
     <section class="resume-section">
       <h2>Skills</h2>
@@ -113,6 +117,18 @@ import { SITE } from '../config/site';
         ))}
       </dl>
     </section>
+
+    {RESUME.learning.length > 0 && (
+      <section class="resume-section">
+        <h2>Projects & continuous learning</h2>
+        <ul class="highlight-list">
+          {RESUME.learning.map((l) => <li>{l}</li>)}
+        </ul>
+        <p class="learning-pointer">
+          See <a href="/projects/">/projects/</a> for technical writeups of the homelab and OSINT work.
+        </p>
+      </section>
+    )}
   </article>
 </BaseLayout>
 
@@ -159,16 +175,34 @@ import { SITE } from '../config/site';
   .cta-link:hover::after { color: var(--color-accent); }
   .cta-primary { color: var(--color-accent); border-bottom-color: var(--color-accent); font-weight: 600; }
 
-  .pdf-note {
-    margin-top: var(--space-5);
-    padding: var(--space-3) var(--space-4);
-    background: var(--color-accent-soft);
-    border-left: 2px solid var(--color-accent);
-    color: var(--color-ink-muted);
-    font-size: var(--text-sm);
+  /* highlights + learning bullets */
+  .highlight-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-4);
   }
-  .pdf-note code {
-    font-size: 0.92em;
+  .highlight-list li {
+    position: relative;
+    padding-left: var(--space-5);
+    color: var(--color-ink);
+    max-width: var(--measure);
+  }
+  .highlight-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.55em;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-accent);
+  }
+  .learning-pointer {
+    margin-top: var(--space-5);
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
   }
 
   .resume-section {
