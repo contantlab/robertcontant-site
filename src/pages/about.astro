@@ -60,8 +60,11 @@ const skills = [
 
 <style>
   .about {
+    /* Span the page-shell container width (72rem) — paragraphs, h1, and
+       skill rows enforce their own readable max-widths below, so removing
+       the section-level constraint just left-aligns content to the same
+       edge as other section headings instead of centering it as an island. */
     padding-block: var(--space-10) var(--space-10);
-    max-width: 48rem;
   }
 
   .about-head { margin-bottom: var(--space-10); }
