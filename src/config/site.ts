@@ -9,17 +9,13 @@ export const SITE = {
   twitter: '',
   github: 'https://github.com/contantlab',
   linkedin: 'https://www.linkedin.com/in/robert-contant/',
-  /**
-   * BUILD-TIME ONLY. Do NOT import into any component that ends up in the
-   * client bundle — the address must never appear in publicly served HTML.
-   * The /contact/ form routes messages here via the form provider's backend.
-   */
-  email: 'bobby@contantsolutions.com',
   defaultOgImage: '/og-default.svg',
   /**
    * TODO(bobby): replace with your real Formspree form endpoint after creating
    * the form at https://formspree.io. Format: 'https://formspree.io/f/XXXXXXXX'.
-   * In the Formspree dashboard, set the destination email to bobby@contantsolutions.com.
+   * In the Formspree dashboard, set the destination email to
+   * robert.v.contant@gmail.com. (The destination is held server-side by
+   * Formspree, never in this repo or in served HTML.)
    * Leave as null to disable form submission (the page will show a friendly message).
    */
   formspreeEndpoint: null as string | null,

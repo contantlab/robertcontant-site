@@ -2,9 +2,9 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../config/site';
 
-// NOTE: intentionally do not import SITE.email here — the address must
-// never appear in the client-rendered HTML. Formspree's backend holds
-// the destination address; the page only needs the endpoint URL.
+// NOTE: the destination email lives only in the Formspree dashboard —
+// not in this repo and never in served HTML. The page only needs the
+// endpoint URL; Formspree handles the routing.
 const endpoint = SITE.formspreeEndpoint;
 const formAction = endpoint ?? '#';
 ---
