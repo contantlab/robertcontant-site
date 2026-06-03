@@ -60,18 +60,18 @@ const skills = [
 
 <style>
   .about {
-    /* Span the page-shell container width (72rem) — paragraphs, h1, and
-       skill rows enforce their own readable max-widths below, so removing
-       the section-level constraint just left-aligns content to the same
-       edge as other section headings instead of centering it as an island. */
+    /* Centered column that's wider than a strict prose measure but not the
+       full page-shell. Paragraphs below drop their own max-width so they fill
+       this container — eliminates the inner empty space on the right while
+       keeping symmetric padding on both sides of the section. */
     padding-block: var(--space-10) var(--space-10);
+    max-width: 60rem;
   }
 
   .about-head { margin-bottom: var(--space-10); }
   .about-head .eyebrow { margin-bottom: var(--space-4); }
   .about-head h1 {
     font-size: var(--text-4xl);
-    max-width: var(--measure);
   }
 
   .about-body :global(h2) {
@@ -87,7 +87,6 @@ const skills = [
   .about-body :global(ol),
   .about-body :global(blockquote) {
     margin-block: var(--space-4);
-    max-width: var(--measure);
   }
   .about-body :global(blockquote) {
     border-left: 2px solid var(--color-rule-strong);
