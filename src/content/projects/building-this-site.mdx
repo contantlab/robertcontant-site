@@ -1,9 +1,9 @@
 ---
 title: "Building This Site: A Fast, Secure Portfolio on Astro + Cloudflare"
-summary: "A static, security-conscious portfolio built with Astro and Cloudflare Pages — and why a security engineer's own site should practice what it preaches."
+summary: "A static, security-conscious portfolio built with Astro and Cloudflare Workers — and why a security engineer's own site should practice what it preaches."
 date: 2026-06-02
 tags: ["web", "astro", "cloudflare", "security-headers", "devops"]
-stack: ["Astro", "MDX", "Cloudflare Pages", "GitHub", "Claude Code"]
+stack: ["Astro", "MDX", "Cloudflare Workers", "GitHub", "Claude Code"]
 featured: true
 draft: false
 ---
@@ -22,9 +22,11 @@ scrutiny: a sloppy personal site undercuts the pitch.
 I chose a static-first architecture: Astro for the framework, with content
 (projects and blog posts) authored as Markdown/MDX files version-controlled in
 Git rather than stored in a database. That keeps the whole site fast, portable,
-and auditable &mdash; every change is a commit. I deployed on Cloudflare Pages,
-which gives me a global CDN, automatic HTTPS, and free hosting, with deploys
-triggered automatically on every push to GitHub.
+and auditable &mdash; every change is a commit. I deployed on Cloudflare Workers
+with Static Assets (the current successor to Cloudflare Pages, which Cloudflare
+folded into Workers in early 2026), which gives me a global CDN, automatic
+HTTPS, and free hosting, with deploys triggered automatically on every push
+to GitHub.
 
 ## Implementation
 
