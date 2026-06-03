@@ -3,7 +3,7 @@ export const SITE = {
   title: 'Robert Contant',
   tagline: 'Cybersecurity engineer',
   description:
-    'Robert Contant — cybersecurity engineer working across networking, detection engineering, OSINT, and AI. Projects, writing, and resume.',
+    'Robert Contant - cybersecurity engineer working across networking, detection engineering, OSINT, and AI. Projects, writing, and resume.',
   author: 'Robert Contant',
   locale: 'en_US',
   twitter: '',
@@ -12,7 +12,7 @@ export const SITE = {
   defaultOgImage: '/og-default.svg',
   /**
    * Formspree form endpoint for /contact/. Destination email is configured
-   * in the Formspree dashboard (currently robert.v.contant@gmail.com) — held
+   * in the Formspree dashboard (currently robert.v.contant@gmail.com) - held
    * server-side, never in this repo or served HTML.
    */
   formspreeEndpoint: 'https://formspree.io/f/mykagzer' as string | null,

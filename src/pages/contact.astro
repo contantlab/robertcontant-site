@@ -2,7 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { SITE } from '../config/site';
 
-// NOTE: the destination email lives only in the Formspree dashboard —
+// NOTE: the destination email lives only in the Formspree dashboard -
 // not in this repo and never in served HTML. The page only needs the
 // endpoint URL; Formspree handles the routing.
 const endpoint = SITE.formspreeEndpoint;
@@ -227,11 +227,11 @@ const formAction = endpoint ?? '#';
       if (!endpoint) return; // no-op; button is disabled too
       e.preventDefault();
 
-      // Honeypot guard — silent success to bots
+      // Honeypot guard - silent success to bots
       const gotcha = (form.elements.namedItem('_gotcha') as HTMLInputElement | null)?.value;
       if (gotcha) {
         status.dataset.state = 'ok';
-        status.textContent = 'Thanks — your message is on its way.';
+        status.textContent = 'Thanks - your message is on its way.';
         form.reset();
         return;
       }
@@ -249,13 +249,13 @@ const formAction = endpoint ?? '#';
         });
         if (res.ok) {
           status.dataset.state = 'ok';
-          status.textContent = 'Thanks — your message is on its way. I’ll respond as soon as I can.';
+          status.textContent = 'Thanks - your message is on its way. I’ll respond as soon as I can.';
           form.reset();
         } else {
           const body = await res.json().catch(() => ({} as { error?: string }));
           status.dataset.state = 'error';
           status.textContent = body.error
-            ? `Couldn’t send — ${body.error}`
+            ? `Couldn’t send - ${body.error}`
             : 'Couldn’t send. Please try again in a moment.';
         }
       } catch {

@@ -28,7 +28,7 @@ export interface ResumeSkillGroup {
 }
 
 export interface Resume {
-  /** Path to the downloadable PDF in /public — null hides the download link */
+  /** Path to the downloadable PDF in /public - null hides the download link */
   pdfPath: string | null;
   /** Filename shown in the browser's Save As dialog. Defaults to URL filename. */
   pdfDownloadName?: string;
@@ -40,7 +40,7 @@ export interface Resume {
   education: ResumeEducation[];
   certifications: ResumeCert[];
   skills: ResumeSkillGroup[];
-  /** "Projects & continuous learning" — short-form bullets, not full project writeups */
+  /** "Projects & continuous learning" - short-form bullets, not full project writeups */
   learning: string[];
 }
 
@@ -52,7 +52,7 @@ export const RESUME: Resume = {
   location: 'West Springfield, MA',
 
   summary:
-    'Cybersecurity professional with 14+ years of combined experience across military security, signals intelligence, classified information protection, cybersecurity, information security, and GRC — including 9+ years building and maturing security programs for global software organizations. Focused on hands-on security operations, incident response, vulnerability management, cloud security, identity and access controls, Microsoft security tooling, and practical security automation. Experienced partnering with IT, CloudOps, engineering, legal, privacy, and external SOC/MDR teams to improve detection, response, hardening, remediation, and operational resilience. U.S. Marine Corps veteran with prior TS/SCI clearance.',
+    'Cybersecurity professional with 14+ years of combined experience across military security, signals intelligence, classified information protection, cybersecurity, information security, and GRC - including 9+ years building and maturing security programs for global software organizations. Focused on hands-on security operations, incident response, vulnerability management, cloud security, identity and access controls, Microsoft security tooling, and practical security automation. Experienced partnering with IT, CloudOps, engineering, legal, privacy, and external SOC/MDR teams to improve detection, response, hardening, remediation, and operational resilience. U.S. Marine Corps veteran with prior TS/SCI clearance.',
 
   highlights: [
     'Report directly to the CIO while leading cybersecurity, security operations coordination, incident response, vendor risk, customer assurance, and compliance functions for a global software organization.',
@@ -80,7 +80,7 @@ export const RESUME: Resume = {
       ],
     },
     {
-      title: 'Senior Manager — Risk & Compliance',
+      title: 'Senior Manager - Risk & Compliance',
       org: 'HCL Software',
       location: 'Remote, US',
       start: 'Dec 2022',
@@ -138,7 +138,7 @@ export const RESUME: Resume = {
       ],
     },
     {
-      title: 'Sergeant — Signals Intelligence Operator / Embassy Security Guard',
+      title: 'Sergeant - Signals Intelligence Operator / Embassy Security Guard',
       org: 'U.S. Marine Corps',
       location: 'Various Overseas Assignments',
       start: 'Jun 2010',

@@ -1,6 +1,6 @@
 User-agent: *
 Allow: /
 
-# AI crawlers — neither explicitly invited nor blocked. Adjust if you change your mind.
+# AI crawlers - neither explicitly invited nor blocked. Adjust if you change your mind.
 
 Sitemap: https://robertcontant.com/sitemap-index.xml

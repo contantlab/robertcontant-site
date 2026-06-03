@@ -1,5 +1,5 @@
 /**
- * "Mar 12, 2025" — short, human, locale-stable for an English-language site.
+ * "Mar 12, 2025" - short, human, locale-stable for an English-language site.
  */
 export function formatDate(date: Date | string): string {
   const d = typeof date === 'string' ? new Date(date) : date;
@@ -10,7 +10,7 @@ export function formatDate(date: Date | string): string {
   }).format(d);
 }
 
-/** "2025-03-12" — for <time datetime=""> attributes. */
+/** "2025-03-12" - for <time datetime=""> attributes. */
 export function isoDate(date: Date | string): string {
   const d = typeof date === 'string' ? new Date(date) : date;
   return d.toISOString().slice(0, 10);
@@ -19,7 +19,7 @@ export function isoDate(date: Date | string): string {
 /**
  * Rough reading-time estimate from raw markdown.
  * Strips code blocks and frontmatter-style noise before counting words at 220 wpm
- * (a touch faster than the conventional 200 — technical readers skim code).
+ * (a touch faster than the conventional 200 - technical readers skim code).
  */
 export function readingTime(markdown: string): { minutes: number; words: number; label: string } {
   const cleaned = markdown
