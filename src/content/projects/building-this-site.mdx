@@ -1,0 +1,58 @@
+---
+title: "Building This Site: A Fast, Secure Portfolio on Astro + Cloudflare"
+summary: "A static, security-conscious portfolio built with Astro and Cloudflare Pages — and why a security engineer's own site should practice what it preaches."
+date: 2026-06-02
+tags: ["web", "astro", "cloudflare", "security-headers", "devops"]
+stack: ["Astro", "MDX", "Cloudflare Pages", "GitHub", "Claude Code"]
+featured: true
+draft: false
+---
+
+## Problem & context
+
+I needed a portfolio that does more than list jobs &mdash; somewhere to document
+projects, write about what I'm learning, and give employers a real sense of how
+I work. It also needed to load fast, cost almost nothing to run, and be
+something I could maintain in plain text without fighting a CMS. And since I'm
+presenting myself as a security engineer, the site itself had to hold up to
+scrutiny: a sloppy personal site undercuts the pitch.
+
+## Approach
+
+I chose a static-first architecture: Astro for the framework, with content
+(projects and blog posts) authored as Markdown/MDX files version-controlled in
+Git rather than stored in a database. That keeps the whole site fast, portable,
+and auditable &mdash; every change is a commit. I deployed on Cloudflare Pages,
+which gives me a global CDN, automatic HTTPS, and free hosting, with deploys
+triggered automatically on every push to GitHub.
+
+## Implementation
+
+The site uses Astro content collections with typed schemas, so each project
+and blog post has structured, validated frontmatter (title, date, tags, stack).
+Fonts are self-hosted rather than pulled from a third-party CDN &mdash; fewer
+external requests, better privacy, and a tighter content security policy.
+
+The part I cared most about was the security posture. I configured response
+headers at the edge: a Content-Security-Policy locking down what can load and
+from where, HSTS to force HTTPS, `X-Content-Type-Options: nosniff`, a strict
+Referrer-Policy, and a restrictive Permissions-Policy. I treated my own site
+the way I'd treat a client's &mdash; verified the headers externally and tuned
+the CSP until it was as tight as possible without breaking legitimate
+functionality.
+
+The build workflow is intentionally simple: edit content locally, run the dev
+server to preview, commit and push to GitHub, and Cloudflare deploys the result
+in about a minute. I used Claude Code to scaffold and iterate on the build,
+which let me move quickly while keeping the commit history clean.
+
+## Outcome & lessons
+
+The result is a fast, inexpensive, low-maintenance site I fully control, with a
+security configuration I'm comfortable having a technical interviewer inspect.
+The biggest practical lesson was a boring one: keep the project out of any
+folder that auto-syncs (cloud-sync clients and `node_modules` do not get along).
+The more interesting takeaway was how much the "treat your own site like a
+client engagement" framing improved the result &mdash; running my own site
+through the same hardening and verification I'd apply professionally turned a
+portfolio into a small but real demonstration of the work itself.
